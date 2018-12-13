@@ -77,3 +77,16 @@ class Meteoroid(FlyingObject):
 class Coin(FlyingObject):
     def __init__(self,x,y,r,img,w,h,F):
         FlyingObject.__init__(self,x,y,r,img,w,h,F)
+        
+        
+class Game:
+        def __init__ (self,w,h):#add initialpos later)
+            self.w=w
+            self.h=h
+            #self.initialpos=initialpos #initial pos will indicate where the space craft appears on the xy axis
+            #self.gameOver = player.loadFile(path+"/sounds/gameover.wav")
+            self.musicgame = player.loadFile(path+"/sounds/musicgame.mp3") #Background music that will start playing once the game begins. 
+            self.musicstart = player.loadFile(path+"/sounds/musicstart.mp3")
+            self.musicstart.play()
+
+g = Game(1280,720)
