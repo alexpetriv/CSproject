@@ -125,7 +125,7 @@ class Enemy(Spacecraft):
             
             
             
-
+#Created a class for enemy boss which shares same attributes as the class spacecraft.
 class Enemyboss(Spacecraft):
         def __init__(self,x,y,r,l,img,w,h): 
             Spacecraft.__init__(self,x,y,r,l,img,w,h)
@@ -137,7 +137,8 @@ class Enemyboss(Spacecraft):
                 self.y = self.r
             elif self.y >= 800-self.r:
                 self.y = 800 - self.r
-                
+             
+ #Bullet class in which i define dimensions and image for bullets.   
 class Bullet:
     def __init__(self, x,y,v):
         self.x = x+100*v
@@ -156,6 +157,7 @@ class Bullet:
         else:
             self.x -= 8
         
+        #COndition to remove enemies one the bullets hit them
         for k in s.enemies:
             if self.v != -1 and k.x-1<=self.x+40<=k.x+100 or k.x-1<=self.x<=k.x+100 or k.x-1<=self.x+15<=k.x+100 or k.x-1<=self.x+30<=k.x+100 or k.x-1<=self.x+20<=k.x+100:
                 if k.y-50<=self.y<=k.y+70 :
@@ -169,13 +171,13 @@ class Bullet:
         if s.myplayer.x <=self.x<=s.myplayer.x +100 and s.myplayer.y-70<=self.y <= s.myplayer.y+70:
             s.status = 0
         
-
+#Pic for a boss and condition to give a boss every time you kill 5 smaller enemies.
         if s.kills > 1 and s.kills%5 == 0: #BOSS
             for k in s.enemies:
                 s.enemies.remove(k)
                 s.enemies.append(Enemy(s.l+1000,s.h/2,105,s.l+100,"enemyboss1.png",300,210))
 
-# game class
+# game class in which i define the main settings of the game.
 class Game:
     def __init__(self,w,h,l):
         self.kills = 0 
@@ -189,7 +191,6 @@ class Game:
         self.myplayer=Myship(l,h/2,35,self.l,"playership1.png",100,70)
         self.enemies = []
         self.enemies.append(Enemy(l+1230,h/3,35,self.l+100,"enemyship1.png",100,70))
-        
         self.enemyboss = Enemyboss(l+1230,h/2,105,self.l+100,"enemyboss1.png",300,210)
         
     def display(self):
@@ -210,12 +211,12 @@ s = Game(1280,800,50)
 def setup():
     size(s.w, s.h)
     background(0)
-
+#Move frames and create a background picture (consits of two images). Gives a continuous loop effect. 
 def draw():    
     if s.status == 1:
         s.frames +=15
         s.frames = s.frames%2560
-        
+    
         background(0)
         image(s.img,-s.frames,0)
         image(s.img,2560-s.frames,0)
