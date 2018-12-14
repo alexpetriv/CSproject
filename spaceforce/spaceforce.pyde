@@ -13,7 +13,7 @@ player = Minim(this)
 
 
 class Spacecraft:
-    def __init__(self,x,y,r,l):
+    def __init__(self,x,y,r,l,img,w,h):
         self.x=x
         self.y=y
         #radius of the eclipse
@@ -21,7 +21,10 @@ class Spacecraft:
         self.l=l
         self.vx=0
         self.vy=0
-        # self.img = loadImage(path+"/images/"+img)
+        self.img = loadImage(path+"/images/"+img)
+        self.w=w
+        self.h=h
+        # self.F=F
 
     def display(self):
         stroke(255)
@@ -29,10 +32,11 @@ class Spacecraft:
         ellipse(self.x+self.r,self.y,self.r*2,self.r*2)
         stroke(255,0,0)
         line(self.x,self.y-self.r,self.l,self.y+self.r)
+        image(self.img,self.x,self.y,self.r*2,self.r*2)
 
 class Myship(Spacecraft):
-    def __init__(self,x,y,r,l):
-        Spacecraft.__init__(self,x,y,r,l)
+    def __init__(self,x,y,r,l,img,w,h):
+        Spacecraft.__init__(self,x,y,r,l,img,w,h)
         self.keyHandler={LEFT:False, RIGHT:False, UP:False, DOWN:False}
 
 # game class
@@ -43,7 +47,7 @@ class Game:
         # board line along which the player's space craft will be moving
         self.l=l
         self.img = loadImage(path+"/images/space2560x800.jpg")
-        self.myplayer=Myship(l,h/2,35,self.l)
+        self.myplayer=Myship(l,h/2,35,self.l,"playership1.png",100,70)
         
     def display(self):
         image(self.img,0,0)
@@ -82,44 +86,3 @@ def keyReleased():
         s.myplayer.keyHandler[UP] = False
     elif keyCode == DOWN:
         s.myplayer.keyHandler[DOWN] = False
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        # frameRate(60)
-        # background(230)
-        # image(self.img,0,0) #self.w,self.h
-        # stroke(255)
-        # strokeWeight(2)
-        # line(100,0,100,700)
-        # line(1110,0,1100,700)
-        
-        
-# s = SpaceForce(1280,700)
-
-# def setup():
-#     background(255)
-#     size(s.w,s.h)
-
-
-# def draw():
-#     background(255)
-#     s.display()
-
-
-
-#Need to create the following objects:
-#spacecraft, meteoroid, enemy spacecraft, boss spacecraft, health coin
-#Create a scorecount: determined by the time the player was able to survive
-#Create a health bar or counter for the player, enemies and meteoroids
-#Player's space craft will be shooting when a player presses "Space Bar" 
