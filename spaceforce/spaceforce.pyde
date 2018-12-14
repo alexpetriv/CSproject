@@ -36,8 +36,7 @@ class Spacecraft:
         noFill()
         ellipse(self.x+self.r,self.y,self.r*2,self.r*2)
         stroke(255,0,0)
-        line(self.x,self.y-self.r,self.l,self.y+self.r)
-        image(self.img,self.x,self.y,self.r*2,self.r*2)
+        image(self.img,self.x,self.y-self.r,self.r*2,self.r*2)
 
 class Myship(Spacecraft):
     def __init__(self,x,y,r,l,img,w,h):
@@ -59,6 +58,14 @@ class Myship(Spacecraft):
         
         if self.x-self.r < 0:
             self.x = self.r
+            
+class Enemy(Spacecraft):
+        def __init__(self,x,y,r,l,img,w,h):
+            Spacecraft.__init__(self,x,y,r,l,img,w,h)
+
+class Enemyboss(Spacecraft):
+        def __init__(self,x,y,r,l,img,w,h): 
+            Spacecraft.__init__(self,x,y,r,l,img,w,h)
 
 # game class
 class Game:
@@ -69,6 +76,8 @@ class Game:
         self.l=l
         self.img = loadImage(path+"/images/space2560x800.jpg")
         self.myplayer=Myship(l,h/2,35,self.l,"playership1.png",100,70)
+        self.enemy = Enemy(l+1000,h/3,35,self.l+100,"enemyship1.png",100,70)
+        self.enemyboss = Enemyboss(l+1000,h/2,105,self.l+100,"enemyboss1.png",300,210)
         
     def display(self):
         image(self.img,0,0)
@@ -77,8 +86,10 @@ class Game:
         line(self.l,0,self.l,self.h)
         line(self.l+1000,0,self.l+1000,self.h)
         self.myplayer.display()
+        self.enemy.display()
+        self.enemyboss.display()
         
-s = Game(1280,800,100)
+s = Game(1280,800,50)
 
 def setup():
     size(s.w, s.h)
