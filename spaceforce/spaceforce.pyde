@@ -12,17 +12,17 @@ player = Minim(this)
 
 
 
-class SpaceCraft:
+class Spacecraft:
     def __init__(self,x,y,r,l):
         self.x=x
         self.y=y
-        self.r=r#radius of the eclipse
+        #radius of the eclipse
+        self.r=r
         self.l=l
         self.vx=0
         self.vy=0
         # self.img = loadImage(path+"/images/"+img)
 
-    
     def display(self):
         stroke(255)
         noFill()
@@ -30,14 +30,20 @@ class SpaceCraft:
         stroke(255,0,0)
         line(self.x,self.y-self.r,self.l,self.y+self.r)
 
+class Myship(Spacecraft):
+    def __init__(self,x,y,r,l):
+        Spacecraft.__init__(self,x,y,r,l)
+        self.keyHandler={LEFT:False, RIGHT:False, UP:False, DOWN:False}
 
-class Game: #game class
+# game class
+class Game:
     def __init__(self,w,h,l):
         self.w=w
         self.h=h
-        self.l=l #board line along which the player's space craft will be moving
+        # board line along which the player's space craft will be moving
+        self.l=l
         self.img = loadImage(path+"/images/space2560x800.jpg")
-        self.myplayer=SpaceCraft(l,h/2,35,self.l)
+        self.myplayer=Myship(l,h/2,35,self.l)
         
     def display(self):
         image(self.img,0,0)
@@ -58,7 +64,24 @@ def draw():
     s.display()
 
 
-
+def keyPressed():
+    if keyCode == LEFT:
+        s.myplayer.keyHandler[LEFT] = True
+    elif keyCode == RIGHT:
+        s.myplayer.keyHandler[RIGHT] = True
+    elif keyCode == UP:
+        s.myplayer.keyHandler[UP] = True
+    elif keyCode == DOWN:
+        s.myplayer.keyHandler[DOWN] = True
+def keyReleased():
+    if keyCode == LEFT:
+        s.myplayer.keyHandler[LEFT] = False
+    elif keyCode == RIGHT:
+        s.myplayer.keyHandler[RIGHT] = False
+    elif keyCode == UP:
+        s.myplayer.keyHandler[UP] = False
+    elif keyCode == DOWN:
+        s.myplayer.keyHandler[DOWN] = False
 
 
 
