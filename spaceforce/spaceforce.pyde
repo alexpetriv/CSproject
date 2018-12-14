@@ -8,6 +8,23 @@ path = os.getcwd()
 player = Minim(this)
 
 
+class SpaceCraft:
+    def__init__(self,x,y,r,g):
+        self.x=x
+        self.y=y
+        self.r=r
+        self.g=g
+        self.vx=0
+        self.vy=0
+    
+    def display(self):
+        stroke(255)
+        noFill()
+        ellipse(self.x,self.y,self.r*2,self.r*2)
+        stroke(255,0,0)
+        
+
+
 class SpaceForce: #game class
     def __init__(self,w,h,l):
         self.w=w
