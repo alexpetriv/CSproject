@@ -48,6 +48,7 @@ class Myship(Spacecraft):
         self.bullets = []
         
     def update(self):
+        self.collision()
         if self.recoil > 0: #### RECOIL COMMENT
             self.recoil -= 1
         for i in self.bullets:
@@ -77,11 +78,12 @@ class Myship(Spacecraft):
 
 
     def collision(self):
-        pass
+        for a in s.enemies:
+            if ((self.x+self.r-a.x-a.r)**2+(self.y+self.r-a.y-a.r)**2)**0.5 <= self.r+a.r:
+                print('collide')
+                s.status = 0
             
 class Enemy(Spacecraft):
-    
-    
         def __init__(self,x,y,r,l,img,w,h):
             Spacecraft.__init__(self,x,y,r,l,img,w,h)
             self.y1 = self.r+1
@@ -90,7 +92,7 @@ class Enemy(Spacecraft):
             self.y2 = self.var[random.randint(0,3)]
             self.vy = -5
             self.vx = -5
-            print self.y1, self.y2
+     
             
             
         def update(self):
@@ -101,6 +103,13 @@ class Enemy(Spacecraft):
                 self.y = self.r
             elif self.y >= 800-self.r:
                 self.y = 800 - self.r
+                
+            if self.x <= -75:
+                del s.enemies[:]
+                
+            if len(s.enemies) == 0:
+                s.enemies.append(Enemy(s.l+1000,s.h/3,35,s.l+100,"enemyship1.png",100,70))
+  
                 
         def doging(self):
             if self.y <= self.y1:
@@ -135,11 +144,20 @@ class Bullet:
         
     def update(self): ####update
         self.x += 8
+        for k in s.enemies:
+            if k.x-1<=self.x+40<=k.x+100 and k.y-1<=self.y<=k.y+70:
+                self.x = 5000
+                s.enemies.remove(k)
+                if len(s.enemies) == 0:
+                    s.enemies.append(Enemy(s.l+1000,s.h/3,35,s.l+100,"enemyship1.png",100,70))
+                print s.enemies
 
 
 # game class
 class Game:
     def __init__(self,w,h,l):
+        self.kills = 0 #!!!!!
+        self.status = 1
         self.w=w
         self.frames = 0
         self.h=h
@@ -149,6 +167,7 @@ class Game:
         self.myplayer=Myship(l,h/2,35,self.l,"playership1.png",100,70)
         self.enemies = []
         self.enemies.append(Enemy(l+1000,h/3,35,self.l+100,"enemyship1.png",100,70))
+        
         self.enemyboss = Enemyboss(l+1000,h/2,105,self.l+100,"enemyboss1.png",300,210)
         
     def display(self):
@@ -186,13 +205,19 @@ def setup():
     background(0)
 
 def draw():
-    s.frames +=15
-    s.frames = s.frames%2560
-    
-    background(0)
-    image(s.img,-s.frames,0)
-    image(s.img,2560-s.frames,0)
-    s.display()
+    if s.status == 1:
+        s.frames +=15
+        s.frames = s.frames%2560
+        
+        background(0)
+        image(s.img,-s.frames,0)
+        image(s.img,2560-s.frames,0)
+        s.display()
+    elif s.status == 0:
+        background(0)
+        textSize(45)
+        fill(255)
+        text('Looser', 350,200)
 
 
 
