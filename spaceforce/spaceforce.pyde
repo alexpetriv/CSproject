@@ -44,7 +44,6 @@ class Myship(Spacecraft):
         self.keyHandler={LEFT:False, RIGHT:False, UP:False, DOWN:False}
         
     def update(self):
-
         if self.keyHandler[UP]:
             self.vy = -10
         elif self.keyHandler[DOWN]:
@@ -62,10 +61,16 @@ class Myship(Spacecraft):
 class Enemy(Spacecraft):
         def __init__(self,x,y,r,l,img,w,h):
             Spacecraft.__init__(self,x,y,r,l,img,w,h)
+        def update(self):
+            self.x += self.vx
+            self.y += self.vy
 
 class Enemyboss(Spacecraft):
         def __init__(self,x,y,r,l,img,w,h): 
             Spacecraft.__init__(self,x,y,r,l,img,w,h)
+        def update(self):
+            self.x += self.vx
+            self.y += self.vy
 
 # game class
 class Game:
