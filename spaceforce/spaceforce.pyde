@@ -1,6 +1,9 @@
 #Space Force Game 
 # Alex Petriv Github repository: "https://github.com/alexpetriv/CSproject/tree/master/spaceforce"
 
+#added enemyship image, background image
+#line(x,y,x1,y1)
+
 
 import os, random, time
 add_library('minim')
@@ -8,23 +11,24 @@ path = os.getcwd()
 player = Minim(this)
 
 
+
 class SpaceCraft:
-    def __init__(self,x,y,r,g):
+    def __init__(self,x,y,r,l):
         self.x=x
         self.y=y
-        self.r=r
-        self.g=g
+        self.r=r#radius of the eclipse
+        self.l=l
         self.vx=0
         self.vy=0
-        self.img = loadImage(path+"/images/"+img)
+        # self.img = loadImage(path+"/images/"+img)
 
     
     def display(self):
         stroke(255)
         noFill()
-        ellipse(self.x,self.y,self.r*2,self.r*2)
+        ellipse(self.x+self.r,self.y,self.r*2,self.r*2)
         stroke(255,0,0)
-        
+        line(self.x,self.y-self.r,self.l,self.y+self.r)
 
 
 class Game: #game class
@@ -32,14 +36,16 @@ class Game: #game class
         self.w=w
         self.h=h
         self.l=l #board line along which the player's space craft will be moving
-        self.img = loadImage(path+"/images/space5120x800.jpg")
-        
+        self.img = loadImage(path+"/images/space2560x800.jpg")
+        self.myplayer=SpaceCraft(l,h/2,35,self.l)
         
     def display(self):
         image(self.img,0,0)
         stroke(255)
+        #line along which the player will be moving
         line(self.l,0,self.l,self.h)
         line(self.l+1000,0,self.l+1000,self.h)
+        self.myplayer.display()
         
 s = Game(1280,800,100)
 
