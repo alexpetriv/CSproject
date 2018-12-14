@@ -9,13 +9,15 @@ player = Minim(this)
 
 
 class SpaceCraft:
-    def__init__(self,x,y,r,g):
+    def __init__(self,x,y,r,g):
         self.x=x
         self.y=y
         self.r=r
         self.g=g
         self.vx=0
         self.vy=0
+        self.img = loadImage(path+"/images/"+img)
+
     
     def display(self):
         stroke(255)
@@ -25,20 +27,21 @@ class SpaceCraft:
         
 
 
-class SpaceForce: #game class
+class Game: #game class
     def __init__(self,w,h,l):
         self.w=w
         self.h=h
         self.l=l #board line along which the player's space craft will be moving
-        self.img = loadImage(path+"/images/background.jpg")
+        self.img = loadImage(path+"/images/space5120x800.jpg")
         
         
     def display(self):
+        image(self.img,0,0)
         stroke(255)
         line(self.l,0,self.l,self.h)
         line(self.l+1000,0,self.l+1000,self.h)
         
-s = SpaceForce(1280,800,100)
+s = Game(1280,800,100)
 
 def setup():
     size(s.w, s.h)
