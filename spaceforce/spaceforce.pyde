@@ -69,6 +69,7 @@ class Enemyboss(Spacecraft):
         def __init__(self,x,y,r,l,img,w,h): 
             Spacecraft.__init__(self,x,y,r,l,img,w,h)
         def update(self):
+            
             self.x += self.vx
             self.y += self.vy
 
