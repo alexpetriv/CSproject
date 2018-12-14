@@ -1,15 +1,13 @@
 #Space Force Game 
 # Alex Petriv Github repository: "https://github.com/alexpetriv/CSproject/tree/master/spaceforce"
 
-#added enemyship image, background image
-#line(x,y,x1,y1)
-
-
 import os, random, time
 add_library('minim')
 path = os.getcwd()
 player = Minim(this)
 
+# Created a space craft class that will we used to create my spaces ship and enemies. Arguments include location, radius, l = line on which
+# the space craft gets created; emage, width and height
 
 class Spacecraft:
     def __init__(self,x,y,r,l,img,w,h):
@@ -22,38 +20,34 @@ class Spacecraft:
         self.img = loadImage(path+"/images/"+img)
         self.w=w
         self.h=h
-        # self.F=F
        
+       # Place where I have speed (x and y directions) as a function of velocity. 
     def update(self):  
-            
         self.x += self.vx
         self.y += self.vy
 
-
-
-
+        # Place where I show which image for spacecraft should be located where.
     def display(self):
         self.update()
-        stroke(255)
-        noFill()
-        ellipse(self.x+self.r,self.y,self.r*2,self.r*2)
-        stroke(255,0,0)
         image(self.img,self.x,self.y-self.r,self.r*2,self.r*2)
 
+#The class that represents the players own ship. Includes same attributes as the space craft class. Inherits some properties of the Space craft.
 class Myship(Spacecraft):
     def __init__(self,x,y,r,l,img,w,h):
         Spacecraft.__init__(self,x,y,r,l,img,w,h)
+        #Show initial values for my keys. These will be used to control the space ship.
         self.keyHandler={LEFT:False, RIGHT:False, UP:False, DOWN:False, 'SPACE':False}
         self.recoil = 0
         self.bullets = []
         
     def update(self):
         self.collision()
-        if self.recoil > 0: #### RECOIL COMMENT
+        if self.recoil > 0:
             self.recoil -= 1
         for i in self.bullets:
             i.display()
         
+        #Increasing velocity only along the y axis by pressing either UP or DOWN arrows.
         if self.keyHandler[UP]:
             self.vy = -10
         elif self.keyHandler[DOWN]:
@@ -61,12 +55,11 @@ class Myship(Spacecraft):
         else:
             self.vx = 0
             self.vy = 0
-
+        #Shooting. Allow to do it in an interval defined by recoil var. Otherwise it would be able to shoot continuosly and it would be to easy to win.
         if self.keyHandler['SPACE'] and self.recoil == 0:
             self.bullets.append(Bullet(self.x,self.y,1))
             self.recoil = 15
 
-        
         self.x += self.vx
         self.y += self.vy
         
@@ -76,22 +69,24 @@ class Myship(Spacecraft):
             self.y = 800 - self.r
 
 
-
+# Define collision case when the enemy collidues with you and you lose the game.
     def collision(self):
         for a in s.enemies:
             if ((self.x+self.r-a.x-a.r)**2+(self.y+self.r-a.y-a.r)**2)**0.5 <= self.r+a.r:
                 print('collide')
                 s.status = 0
-            
+        #Enemy space craft as a class inherited from Spacecraft. Shares same attributes initially.
 class Enemy(Spacecraft):
         def __init__(self,x,y,r,l,img,w,h):
             Spacecraft.__init__(self,x,y,r,l,img,w,h)
             self.y1 = self.r+1
-            #self.y2 = [random.randint(0,3)]
+            #Define the trajectories along which the enemies should be moving. Also they would move at randomly selected velocities.
             self.var = [400,450,500,550]
             self.y2 = self.var[random.randint(0,3)]
             self.vy = random.randint(-7,7)
             self.vx = random.randint(-7,-2)
+            
+            #Create bulles list to account for bulles. Use recoil to control the rate at which the enemy will be shooting.
             self.bullets = []
             self.recoil = 27
             
@@ -113,6 +108,7 @@ class Enemy(Spacecraft):
                 if s.kills < 0:
                     s.status = 0
                 
+                #Creating new enemies once others get killed or deleted
             if len(s.enemies) == 0:
                 s.enemies.append(Enemy(s.l+1100,s.h/random.randint(1,8),35,s.l+100,"enemyship1.png",100,70))
             if self.recoil == 0:    
@@ -169,8 +165,7 @@ class Bullet:
                     if len(s.enemies) == 0:
                         s.enemies.append(Enemy(s.l+1230,s.h/3,35,s.l+100,"enemyship1.png",100,70))
                         
-                        
-                        
+                                        
         if s.myplayer.x <=self.x<=s.myplayer.x +100 and s.myplayer.y-70<=self.y <= s.myplayer.y+70:
             s.status = 0
         
@@ -179,7 +174,6 @@ class Bullet:
             for k in s.enemies:
                 s.enemies.remove(k)
                 s.enemies.append(Enemy(s.l+1000,s.h/2,105,s.l+100,"enemyboss1.png",300,210))
-
 
 # game class
 class Game:
@@ -203,36 +197,21 @@ class Game:
         #image(self.img,-500,0)
         stroke(255)
         #line along which the player will be moving
-        line(self.l,0,self.l,self.h)
-        line(self.l+1000,0,self.l+1000,self.h)
+        # line(self.l,0,self.l,self.h)
+        # line(self.l+1000,0,self.l+1000,self.h)
         self.myplayer.display()
         for k in self.enemies:
             k.display()
         self.enemyboss.display()
         
-        
-        
-        
-        
-        
-        
-        
-        
+
 s = Game(1280,800,50)
-
-
-
-
-
-
-
-
 
 def setup():
     size(s.w, s.h)
     background(0)
 
-def draw():
+def draw():    
     if s.status == 1:
         s.frames +=15
         s.frames = s.frames%2560
