@@ -16,7 +16,6 @@ class Spacecraft:
     def __init__(self,x,y,r,l,img,w,h):
         self.x=x
         self.y=y
-        #radius of the eclipse
         self.r=r
         self.l=l
         self.vx=0
@@ -25,8 +24,14 @@ class Spacecraft:
         self.w=w
         self.h=h
         # self.F=F
+       
+    def update(self):      
+        self.x += self.vx
+        self.y += self.vy
+
 
     def display(self):
+        self.update()
         stroke(255)
         noFill()
         ellipse(self.x+self.r,self.y,self.r*2,self.r*2)
@@ -38,6 +43,22 @@ class Myship(Spacecraft):
     def __init__(self,x,y,r,l,img,w,h):
         Spacecraft.__init__(self,x,y,r,l,img,w,h)
         self.keyHandler={LEFT:False, RIGHT:False, UP:False, DOWN:False}
+        
+    def update(self):
+
+        if self.keyHandler[UP]:
+            self.vy = -10
+        elif self.keyHandler[DOWN]:
+            self.vy = 10
+        else:
+            self.vx = 0
+            self.vy = 0
+        
+        self.x += self.vx
+        self.y += self.vy
+        
+        if self.x-self.r < 0:
+            self.x = self.r
 
 # game class
 class Game:
